@@ -46,7 +46,7 @@ public abstract class AbstractRequestFilter {
         requestFilters.registerFilter(this);
     }
     
-    protected Class getResponseClazz(Class handlerClazz) throws NacosException {
+    protected Class<?> getResponseClazz(Class<?> handlerClazz) throws NacosException {
         ParameterizedType parameterizedType = (ParameterizedType) handlerClazz.getGenericSuperclass();
         try {
             Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
@@ -57,7 +57,7 @@ public abstract class AbstractRequestFilter {
         }
     }
     
-    protected Method getHandleMethod(Class handlerClazz) throws NacosException {
+    protected Method getHandleMethod(Class<?> handlerClazz) throws NacosException {
         try {
             Method method = handlerClazz.getMethod("handle", Request.class, RequestMeta.class);
             return method;
@@ -66,7 +66,7 @@ public abstract class AbstractRequestFilter {
         }
     }
     
-    protected <T> Response getDefaultResponseInstance(Class handlerClazz) throws NacosException {
+    protected <T> Response getDefaultResponseInstance(Class<?> handlerClazz) throws NacosException {
         ParameterizedType parameterizedType = (ParameterizedType) handlerClazz.getGenericSuperclass();
         try {
             Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
@@ -86,5 +86,5 @@ public abstract class AbstractRequestFilter {
      * @return response
      * @throws NacosException NacosException.
      */
-    protected abstract Response filter(Request request, RequestMeta meta, Class handlerClazz) throws NacosException;
+    protected abstract Response filter(Request request, RequestMeta meta, Class<?> handlerClazz) throws NacosException;
 }

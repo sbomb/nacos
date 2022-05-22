@@ -384,7 +384,7 @@ public class NamingHttpClientProxy extends AbstractNamingClientProxy {
     }
     
     public String reqApi(String api, Map<String, String> params, String method) throws NacosException {
-        return reqApi(api, params, Collections.EMPTY_MAP, method);
+        return reqApi(api, params, Collections.emptyMap(), method);
     }
     
     public String reqApi(String api, Map<String, String> params, Map<String, String> body, String method)

@@ -121,7 +121,7 @@ public abstract class BasePersistentServiceProcessor extends RequestProcessor4CP
         this.notifier = new PersistentNotifier(key -> {
             try {
                 byte[] data = kvStorage.get(ByteUtils.toBytes(key));
-                Datum datum = serializer.deserialize(data, getDatumTypeFromKey(key));
+                Datum<? extends Record> datum = serializer.deserialize(data, getDatumTypeFromKey(key));
                 return null != datum ? datum.value : null;
             } catch (KvStorageException ex) {
                 throw new NacosRuntimeException(ex.getErrCode(), ex.getErrMsg());
@@ -195,7 +195,7 @@ public abstract class BasePersistentServiceProcessor extends RequestProcessor4CP
         final List<byte[]> values = request.getValues();
         for (int i = 0; i < keys.size(); i++) {
             final String key = new String(keys.get(i));
-            final Datum datum = serializer.deserialize(values.get(i), getDatumTypeFromKey(key));
+            final Datum<? extends Record> datum = serializer.deserialize(values.get(i), getDatumTypeFromKey(key));
             final Record value = null != datum ? datum.value : null;
             final ValueChangeEvent event = ValueChangeEvent.builder().key(key).value(value)
                     .action(Op.Delete.equals(op) ? DataOperation.DELETE : DataOperation.CHANGE).build();
@@ -235,11 +235,11 @@ public abstract class BasePersistentServiceProcessor extends RequestProcessor4CP
         return Record.class;
     }
     
-    protected void notifierDatumIfAbsent(String key, RecordListener listener) throws NacosException {
+    protected <T extends Record> void notifierDatumIfAbsent(String key, RecordListener<T> listener) throws NacosException {
         if (KeyBuilder.SERVICE_META_KEY_PREFIX.equals(key)) {
             notifierAllServiceMeta(listener);
         } else {
-            Datum datum = get(key);
+            Datum<T> datum = get(key);
             if (null != datum) {
                 notifierDatum(key, datum, listener);
             }
@@ -249,11 +249,11 @@ public abstract class BasePersistentServiceProcessor extends RequestProcessor4CP
     /**
      * This notify should only notify once during startup. See {@link com.alibaba.nacos.naming.core.ServiceManager#init()}
      */
-    private void notifierAllServiceMeta(RecordListener listener) throws NacosException {
+    private <T extends Record> void notifierAllServiceMeta(RecordListener<T> listener) throws NacosException {
         for (byte[] each : kvStorage.allKeys()) {
             String key = new String(each);
             if (listener.interests(key)) {
-                Datum datum = get(key);
+                Datum<T> datum = get(key);
                 if (null != datum) {
                     notifierDatum(key, datum, listener);
                 }
@@ -261,7 +261,7 @@ public abstract class BasePersistentServiceProcessor extends RequestProcessor4CP
         }
     }
     
-    private void notifierDatum(String key, Datum datum, RecordListener listener) {
+    private <T extends Record> void notifierDatum(String key, Datum<T> datum, RecordListener<T> listener) {
         try {
             listener.onChange(key, datum.value);
         } catch (Exception e) {

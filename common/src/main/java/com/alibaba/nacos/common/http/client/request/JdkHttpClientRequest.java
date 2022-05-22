@@ -98,6 +98,7 @@ public class JdkHttpClientRequest implements HttpClientRequest {
             String contentType = headers.getValue(HttpHeaderConsts.CONTENT_TYPE);
             String bodyStr = JacksonUtils.toJson(body);
             if (MediaType.APPLICATION_FORM_URLENCODED.equals(contentType)) {
+                @SuppressWarnings("unchecked")
                 Map<String, String> map = JacksonUtils.toObj(bodyStr, HashMap.class);
                 bodyStr = HttpUtils.encodingParams(map, headers.getCharset());
             }

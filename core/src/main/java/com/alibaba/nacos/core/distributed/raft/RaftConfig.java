@@ -30,8 +30,10 @@ import java.util.Set;
 
 /**
  * raft config.
- *
+ *  Compoment 和@ConfigurationProperties 两个注解属于Spring，在core包中尽量减少对spring的依赖。
+ *  解决方案：@ConfigurationProperties 可以注解到方法上，在configuation中进行统一处理，而在此直接进行new
  * @author <a href="mailto:liaochuntao@live.com">liaochuntao</a>
+ * 
  */
 @Component
 @ConfigurationProperties(prefix = "nacos.core.protocol.raft")

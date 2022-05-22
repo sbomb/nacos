@@ -44,8 +44,8 @@ public class Datum<T extends Record> implements Serializable {
      * @param <T>   Types of value
      * @return new datum
      */
-    public static <T extends Record> Datum createDatum(final String key, final T value) {
-        Datum datum = new Datum();
+    public static <T extends Record> Datum<T> createDatum(final String key, final T value) {
+        Datum<T> datum = new Datum<>();
         datum.key = key;
         datum.value = value;
         return datum;

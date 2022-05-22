@@ -59,7 +59,7 @@ public interface ConsistencyService {
      * @return data related to the key
      * @throws NacosException nacos exception
      */
-    Datum get(String key) throws NacosException;
+    <T extends Record> Datum<T> get(String key) throws NacosException;
     
     /**
      * Listen for changes of a data.
@@ -68,7 +68,7 @@ public interface ConsistencyService {
      * @param listener callback of data change
      * @throws NacosException nacos exception
      */
-    void listen(String key, RecordListener listener) throws NacosException;
+    <T extends Record> void listen(String key, RecordListener<T> listener) throws NacosException;
     
     /**
      * Cancel listening of a data.
@@ -77,7 +77,7 @@ public interface ConsistencyService {
      * @param listener callback of data change
      * @throws NacosException nacos exception
      */
-    void unListen(String key, RecordListener listener) throws NacosException;
+    <T extends Record> void unListen(String key, RecordListener<T> listener) throws NacosException;
     
     /**
      * Get the error message of the consistency protocol.

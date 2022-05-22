@@ -159,7 +159,7 @@ public class NotifyCenter {
      *
      * @param consumer subscriber
      */
-    public static void registerSubscriber(final Subscriber consumer) {
+    public static <T extends Event> void registerSubscriber(final Subscriber<T> consumer) {
         registerSubscriber(consumer, DEFAULT_PUBLISHER_FACTORY);
     }
     
@@ -170,7 +170,7 @@ public class NotifyCenter {
      * @param consumer subscriber
      * @param factory  publisher factory.
      */
-    public static void registerSubscriber(final Subscriber consumer, final EventPublisherFactory factory) {
+    public static <T extends Event> void registerSubscriber(final Subscriber<T> consumer, final EventPublisherFactory factory) {
         // If you want to listen to multiple events, you do it separately,
         // based on subclass's subscribeTypes method return list, it can register to publisher.
         if (consumer instanceof SmartSubscriber) {
@@ -202,7 +202,7 @@ public class NotifyCenter {
      * @param subscribeType subscribeType.
      * @param factory       publisher factory.
      */
-    private static void addSubscriber(final Subscriber consumer, Class<? extends Event> subscribeType,
+    private static <T extends Event> void addSubscriber(final Subscriber<T> consumer, Class<? extends Event> subscribeType,
             EventPublisherFactory factory) {
         
         final String topic = ClassUtils.getCanonicalName(subscribeType);
@@ -223,7 +223,7 @@ public class NotifyCenter {
      *
      * @param consumer subscriber instance.
      */
-    public static void deregisterSubscriber(final Subscriber consumer) {
+    public static <T extends Event> void deregisterSubscriber(final Subscriber<T> consumer) {
         if (consumer instanceof SmartSubscriber) {
             for (Class<? extends Event> subscribeType : ((SmartSubscriber) consumer).subscribeTypes()) {
                 if (ClassUtils.isAssignableFrom(SlowEvent.class, subscribeType)) {
@@ -254,7 +254,7 @@ public class NotifyCenter {
      * @param subscribeType subscribeType.
      * @return whether remove subscriber successfully or not.
      */
-    private static boolean removeSubscriber(final Subscriber consumer, Class<? extends Event> subscribeType) {
+    private static <T extends Event> boolean removeSubscriber(final Subscriber<T> consumer, Class<? extends Event> subscribeType) {
         
         final String topic = ClassUtils.getCanonicalName(subscribeType);
         EventPublisher eventPublisher = INSTANCE.publisherMap.get(topic);

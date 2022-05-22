@@ -117,6 +117,7 @@ public class WebUtils {
      * @param encoding encode
      * @return Decoded data
      */
+    @SuppressWarnings({ "unused" })
     private static String resolveValueWithUrlDecode(String value, String encoding) {
         if (StringUtils.isEmpty(encoding)) {
             encoding = StandardCharsets.UTF_8.name();
