@@ -42,6 +42,7 @@ public class Header {
     
     private static final String DEFAULT_CHARSET = "UTF-8";
     
+    @SuppressWarnings("unused")
     private static final String DEFAULT_ENCODING = "gzip";
     
     private Header() {
