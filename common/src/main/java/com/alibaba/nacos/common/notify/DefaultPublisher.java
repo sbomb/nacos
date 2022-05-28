@@ -46,9 +46,9 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     
     private volatile boolean shutdown = false;
     
-    private Class<? extends Event> eventType;
+//    private Class<? extends Event> eventType;
     
-    protected final ConcurrentHashSet<Subscriber> subscribers = new ConcurrentHashSet<>();
+    protected final ConcurrentHashSet<Subscriber<Event>> subscribers = new ConcurrentHashSet<>();
     
     private int queueMaxSize = -1;
     
@@ -63,13 +63,13 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     public void init(Class<? extends Event> type, int bufferSize) {
         setDaemon(true);
         setName("nacos.publisher-" + type.getName());
-        this.eventType = type;
+//        this.eventType = type;
         this.queueMaxSize = bufferSize;
         this.queue = new ArrayBlockingQueue<>(bufferSize);
         start();
     }
     
-    public ConcurrentHashSet<Subscriber> getSubscribers() {
+    public ConcurrentHashSet<Subscriber<Event>> getSubscribers() {
         return subscribers;
     }
     
@@ -128,12 +128,12 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     }
     
     @Override
-    public void addSubscriber(Subscriber subscriber) {
+    public   void addSubscriber(Subscriber<Event> subscriber) {
         subscribers.add(subscriber);
     }
     
     @Override
-    public void removeSubscriber(Subscriber subscriber) {
+    public void removeSubscriber(Subscriber<Event> subscriber) {
         subscribers.remove(subscriber);
     }
     
@@ -179,7 +179,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
         }
         
         // Notification single event listener
-        for (Subscriber subscriber : subscribers) {
+        for (Subscriber<Event> subscriber : subscribers) {
             // Whether to ignore expiration events
             if (subscriber.ignoreExpireEvent() && lastEventSequence > currentEventSequence) {
                 LOGGER.debug("[NotifyCenter] the {} is unacceptable to this subscriber, because had expire",
@@ -194,7 +194,7 @@ public class DefaultPublisher extends Thread implements EventPublisher {
     }
     
     @Override
-    public void notifySubscriber(final Subscriber subscriber, final Event event) {
+    public void notifySubscriber(final Subscriber<Event> subscriber, final Event event) {
         
         LOGGER.debug("[NotifyCenter] the {} will received by {}", event, subscriber);
         

@@ -25,6 +25,8 @@ package com.alibaba.nacos.common.notify;
 @SuppressWarnings("PMD.AbstractClassShouldStartWithAbstractNamingRule")
 public abstract class SlowEvent extends Event {
     
+    private static final long serialVersionUID = -5364338698917277556L;
+
     @Override
     public long sequence() {
         return 0;

@@ -53,6 +53,7 @@ public class DefaultPackageScan implements PackageScan {
      * @param <T>          Class type
      * @return a set contains Class
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <T> Set<Class<T>> getSubTypesOf(String pkg, Class<T> requestClass) {
         Set<Class<T>> set = new HashSet<>(16);
@@ -81,6 +82,7 @@ public class DefaultPackageScan implements PackageScan {
      * @param <T>        Class type
      * @return a set contains Class object
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <T> Set<Class<T>> getTypesAnnotatedWith(String pkg, Class<? extends Annotation> annotation) {
         Set<Class<T>> set = new HashSet<>(16);

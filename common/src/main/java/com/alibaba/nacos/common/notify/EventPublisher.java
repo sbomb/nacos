@@ -47,14 +47,14 @@ public interface EventPublisher extends Closeable {
      *
      * @param subscriber {@link Subscriber}
      */
-    void addSubscriber(Subscriber subscriber);
+    void addSubscriber(Subscriber<Event> subscriber);
     
     /**
      * Remove listener.
      *
      * @param subscriber {@link Subscriber}
      */
-    void removeSubscriber(Subscriber subscriber);
+    void removeSubscriber(Subscriber<Event> subscriber);
     
     /**
      * publish event.
@@ -70,6 +70,6 @@ public interface EventPublisher extends Closeable {
      * @param subscriber {@link Subscriber}
      * @param event      {@link Event}
      */
-    void notifySubscriber(Subscriber subscriber, Event event);
+    void notifySubscriber(Subscriber<Event> subscriber, Event event);
     
 }
